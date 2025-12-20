@@ -1,0 +1,282 @@
+---
+alwaysApply: true
+---
+
+## React Build Automation Rules
+
+### Core Build Optimization Principles
+
+1. **Automated Optimization**: Build process automatically applies performance optimizations
+2. **Bundle Analysis**: Bundle size and composition are continuously monitored
+3. **Performance Budgets**: Build fails if performance thresholds are exceeded
+4. **Modern Tooling**: Latest build tools and optimization techniques applied
+
+### Build Optimization Standards
+
+#### Bundle Optimization Requirements
+- **Code Splitting**: Automatic route-based and component-based code splitting
+- **Tree Shaking**: Unused code automatically removed from production bundles
+- **Asset Optimization**: Images, fonts, and other assets automatically optimized
+- **Compression**: Gzip and Brotli compression applied to all assets
+
+#### Performance Budget Gates
+- [ ] Bundle size < 200KB (gzipped) for initial load
+- [ ] Largest contentful paint < 2.5 seconds
+- [ ] First input delay < 100ms
+- [ ] Cumulative layout shift < 0.1
+- [ ] Build fails if budgets exceeded
+
+### Automated Build Workflow
+
+#### Development Build
+```bash
+# Fast development build with hot reload
+npm run dev
+
+# Features:
+# - Fast refresh enabled
+# - Source maps for debugging
+# - Development optimizations bypassed
+# - Bundle analyzer available
+```
+
+#### Production Build
+```bash
+# Optimized production build
+npm run build
+
+# Automatically applies:
+# - Code splitting and tree shaking
+# - Asset optimization and compression
+# - Bundle analysis and reporting
+# - Performance budget checking
+```
+
+#### Build Analysis
+```bash
+# Analyze bundle composition
+npm run build:analyze
+
+# Generates:
+# - Bundle size breakdown
+# - Dependency analysis
+# - Asset optimization suggestions
+# - Performance recommendations
+```
+
+### Build Configuration
+
+#### Webpack/Rollup Configuration Standards
+```javascript
+// Automatic configuration applied:
+{
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+        common: {
+          name: 'common',
+          minChunks: 2,
+          chunks: 'all',
+        },
+      },
+    },
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            drop_console: true,
+            drop_debugger: true,
+          },
+        },
+      }),
+    ],
+  },
+  performance: {
+    hints: 'error',
+    maxAssetSize: 512000,
+    maxEntrypointSize: 512000,
+  },
+}
+```
+
+### CI/CD Integration
+
+#### Build Pipeline
+```yaml
+# .github/workflows/build.yml
+name: Build & Deploy
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Build application
+        run: npm run build
+
+      - name: Analyze bundle
+        run: npm run build:analyze
+
+      - name: Performance audit
+        run: npm run lighthouse
+        continue-on-error: true
+
+      - name: Deploy to staging
+        if: github.ref == 'refs/heads/main'
+        run: npm run deploy:staging
+```
+
+### Asset Optimization
+
+#### Image Optimization
+- **Format Selection**: Automatic WebP/AVIF with fallbacks
+- **Responsive Images**: Automatic srcset generation
+- **Lazy Loading**: Intersection Observer implementation
+- **Compression**: Lossless compression with quality preservation
+
+#### Font Optimization
+- **Subset Selection**: Automatic font subsetting
+- **Format Optimization**: WOFF2 with fallbacks
+- **Preloading**: Critical fonts preloaded
+- **Caching**: Optimal cache headers applied
+
+### Performance Monitoring
+
+#### Real-time Performance Tracking
+```javascript
+// Automatic performance monitoring
+if (typeof window !== 'undefined') {
+  // Core Web Vitals tracking
+  import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+    getCLS(console.log);
+    getFID(console.log);
+    getFCP(console.log);
+    getLCP(console.log);
+    getTTFB(console.log);
+  });
+
+  // Bundle size monitoring
+  if (process.env.NODE_ENV === 'production') {
+    // Report bundle metrics to analytics
+    import('./performance-monitoring').then(({ reportBundleMetrics }) => {
+      reportBundleMetrics();
+    });
+  }
+}
+```
+
+#### Bundle Analysis Integration
+```javascript
+// Automatic bundle analysis in development
+if (process.env.NODE_ENV === 'development' && process.env.ANALYZE === 'true') {
+  const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+  config.plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'server',
+      openAnalyzer: true,
+    })
+  );
+}
+```
+
+### Deployment Automation
+
+#### Environment-specific Builds
+```javascript
+// Automatic environment configuration
+const environment = process.env.NODE_ENV || 'development';
+const isProduction = environment === 'production';
+
+const config = {
+  // Environment-specific optimizations
+  optimization: isProduction ? productionOptimizations : developmentOptimizations,
+
+  // CDN configuration for production
+  publicPath: isProduction
+    ? 'https://cdn.example.com/'
+    : '/',
+};
+```
+
+#### CDN Integration
+```javascript
+// Automatic CDN deployment for assets
+if (isProduction) {
+  config.output.publicPath = process.env.CDN_URL || 'https://cdn.example.com/';
+
+  // Upload assets to CDN
+  config.plugins.push(
+    new UploadPlugin({
+      provider: 'aws-s3',
+      bucket: process.env.CDN_BUCKET,
+      folder: 'assets',
+    })
+  );
+}
+```
+
+### Quality Assurance
+
+#### Build Validation
+- [ ] Bundle size within performance budget
+- [ ] All assets properly optimized
+- [ ] Code splitting working correctly
+- [ ] Source maps generated for debugging
+- [ ] Build completes without errors
+
+#### Performance Validation
+- [ ] Lighthouse scores meet thresholds
+- [ ] Core Web Vitals within acceptable ranges
+- [ ] Bundle analysis shows optimal composition
+- [ ] Asset loading is optimized
+
+### Maintenance & Evolution
+
+#### Build Performance Monitoring
+- Target: < 2 minutes for full production build
+- Incremental: < 30 seconds for changed files
+- Memory: < 1GB during build process
+
+#### Configuration Updates
+- [ ] Review build configuration quarterly
+- [ ] Update performance budgets annually
+- [ ] Upgrade build tools as they become available
+- [ ] Optimize build pipeline based on analytics
+
+#### Learning & Improvements
+- Analyze build performance trends
+- Update optimization strategies based on bundle analysis
+- Implement new performance techniques as they emerge
+- Monitor impact of changes on build times and bundle sizes
+
+---
+
+**Rule Version**: 1.0.0
+**Last Updated**: 2025-12-18
+**Mechanism**: react-build-automation

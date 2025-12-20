@@ -1,0 +1,396 @@
+---
+alwaysApply: true
+---
+
+## React Testing Automation Rules
+
+### Core Testing Principles
+
+1. **Automated Testing**: All components and functions automatically tested
+2. **Quality Assurance**: Tests validate functionality, accessibility, and performance
+3. **CI/CD Integration**: Tests run automatically in build pipeline
+4. **Multiple Test Types**: Unit, integration, e2e, and visual regression testing
+
+### Testing Standards
+
+#### Test Coverage Requirements
+- **Unit Tests**: 100% coverage for all components and utilities
+- **Integration Tests**: Critical user flows and component interactions
+- **E2E Tests**: Complete user journeys and critical paths
+- **Accessibility Tests**: WCAG compliance and screen reader support
+
+#### Quality Gates
+- [ ] Test coverage > 80% overall
+- [ ] All critical paths tested
+- [ ] Accessibility tests pass
+- [ ] Performance tests meet thresholds
+- [ ] Visual regression tests pass
+
+### Automated Testing Workflow
+
+#### Unit Testing
+```bash
+# Run all unit tests
+npm run test:unit
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+#### Integration Testing
+```bash
+# Run integration tests
+npm run test:integration
+
+# Test component interactions
+npm run test:components
+```
+
+#### End-to-End Testing
+```bash
+# Run E2E tests locally
+npm run test:e2e
+
+# Run E2E tests in CI
+npm run test:e2e:ci
+```
+
+### Testing Configuration
+
+#### Jest Configuration Standards
+```javascript
+// Automatic Jest configuration applied:
+module.exports = {
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  collectCoverageFrom: [
+    'components/**/*.{ts,tsx}',
+    'lib/**/*.{ts,tsx}',
+    'pages/**/*.{ts,tsx}',
+    '!**/*.d.ts',
+    '!**/node_modules/**',
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
+  testMatch: [
+    '<rootDir>/**/__tests__/**/*.{ts,tsx}',
+    '<rootDir>/**/*.{test,spec}.{ts,tsx}',
+  ],
+};
+```
+
+### Component Testing Templates
+
+#### Unit Test Template
+```tsx
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { jest, describe, it, expect, beforeEach } from '@jest/globals';
+import { {{ComponentName}} } from './{{ComponentName}}';
+
+describe('{{ComponentName}}', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('Rendering', () => {
+    it('renders without crashing', () => {
+      render(<{{ComponentName}}>Test Content</{{ComponentName}}>);
+      expect(screen.getByText('Test Content')).toBeInTheDocument();
+    });
+
+    it('applies default classes', () => {
+      const { container } = render(<{{ComponentName}}>Test</{{ComponentName}}>);
+      expect(container.firstChild).toHaveClass('default-class');
+    });
+  });
+
+  describe('Props', () => {
+    it('accepts and renders children', () => {
+      render(<{{ComponentName}}><span>Test</span></{{ComponentName}}>);
+      expect(screen.getByText('Test')).toBeInTheDocument();
+    });
+
+    it('applies variant classes correctly', () => {
+      render(<{{ComponentName}} variant="primary">Test</{{ComponentName}}>);
+      expect(screen.getByText('Test')).toHaveClass('primary-variant');
+    });
+  });
+
+  describe('Interactions', () => {
+    it('handles click events', () => {
+      const handleClick = jest.fn();
+      render(<{{ComponentName}} onClick={handleClick}>Click me</{{ComponentName}}>);
+      fireEvent.click(screen.getByText('Click me'));
+      expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('supports keyboard navigation', () => {
+      const handleKeyDown = jest.fn();
+      render(<{{ComponentName}} onKeyDown={handleKeyDown}>Test</{{ComponentName}}>);
+      fireEvent.keyDown(screen.getByText('Test'), { key: 'Enter' });
+      expect(handleKeyDown).toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter' }));
+    });
+  });
+
+  describe('Accessibility', () => {
+    it('has proper ARIA attributes', () => {
+      render(<{{ComponentName}} aria-label="Test component">Test</{{ComponentName}}>);
+      expect(screen.getByLabelText('Test component')).toBeInTheDocument();
+    });
+
+    it('supports screen readers', () => {
+      render(<{{ComponentName}}>Screen reader content</{{ComponentName}}>);
+      expect(screen.getByText('Screen reader content')).toBeInTheDocument();
+    });
+  });
+});
+```
+
+### E2E Testing Standards
+
+#### Playwright Configuration
+```javascript
+// Automatic Playwright configuration:
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './e2e',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: 'html',
+
+  use: {
+    baseURL: 'http://localhost:3000',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+  },
+
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+  ],
+});
+```
+
+#### Critical Path Tests
+```typescript
+// Automatic critical path testing
+import { test, expect } from '@playwright/test';
+
+test.describe('Critical User Journeys', () => {
+  test('complete game flow', async ({ page }) => {
+    // Navigate to game
+    await page.goto('/game');
+
+    // Check initial state
+    await expect(page.locator('text=360 SHOOTER')).toBeVisible();
+
+    // Start game
+    await page.click('text=Click to Start');
+
+    // Verify gameplay elements
+    await expect(page.locator('text=Score:')).toBeVisible();
+    await expect(page.locator('text=Health:')).toBeVisible();
+
+    // Test basic gameplay (mock some interactions)
+    await page.mouse.click(400, 300); // Click to shoot
+
+    // Verify game continues
+    await expect(page.locator('text=Score:')).toBeVisible();
+  });
+
+  test('responsive design', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 }); // Mobile
+    await page.goto('/game');
+    await expect(page.locator('text=360 SHOOTER')).toBeVisible();
+
+    await page.setViewportSize({ width: 1920, height: 1080 }); // Desktop
+    await expect(page.locator('text=360 SHOOTER')).toBeVisible();
+  });
+});
+```
+
+### Accessibility Testing
+
+#### Automated Accessibility Checks
+```javascript
+// Automatic axe-core integration
+import axe from 'axe-core';
+
+describe('Accessibility', () => {
+  it('has no accessibility violations', async () => {
+    const { container } = render(<{{ComponentName}}>Test</{{ComponentName}}>);
+    const results = await axe.run(container);
+    expect(results.violations).toHaveLength(0);
+  });
+});
+```
+
+### Visual Regression Testing
+
+#### Visual Testing Setup
+```javascript
+// Automatic visual regression with Chromatic or similar
+import { test, expect } from '@playwright/test';
+
+test.describe('Visual Regression', () => {
+  test('component visual consistency', async ({ page }) => {
+    await page.goto('/component-gallery');
+
+    // Take screenshot
+    await expect(page).toHaveScreenshot('component-gallery.png', {
+      fullPage: true,
+      threshold: 0.1,
+    });
+  });
+});
+```
+
+### Performance Testing
+
+#### Component Performance Tests
+```javascript
+// Automatic performance testing
+import { render } from '@testing-library/react';
+import { Profiler } from 'react';
+
+describe('Performance', () => {
+  it('renders within performance budget', () => {
+    const onRender = jest.fn();
+    render(
+      <Profiler id="test" onRender={onRender}>
+        <{{ComponentName}}>Test</{{ComponentName}}>
+      </Profiler>
+    );
+
+    // Check render time
+    expect(onRender).toHaveBeenCalled();
+    const renderTime = onRender.mock.calls[0][1];
+    expect(renderTime).toBeLessThan(16); // 60fps budget
+  });
+});
+```
+
+### CI/CD Integration
+
+#### Test Pipeline
+```yaml
+# .github/workflows/test.yml
+name: Testing
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm run test:unit -- --coverage
+
+      - name: Run integration tests
+        run: npm run test:integration
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run E2E tests
+        run: npm run test:e2e:ci
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report/
+```
+
+### Quality Assurance
+
+#### Test Validation
+- [ ] All tests pass in CI/CD
+- [ ] Coverage reports generated and reviewed
+- [ ] Accessibility tests pass
+- [ ] Performance tests meet thresholds
+- [ ] Visual regression tests pass
+
+#### Maintenance Tasks
+- [ ] Review test coverage quarterly
+- [ ] Update test templates with new patterns
+- [ ] Audit test effectiveness annually
+- [ ] Update testing tools and configurations
+
+### Learning & Evolution
+
+#### Test Analytics
+- Track which tests fail most frequently
+- Identify components needing better test coverage
+- Measure test execution time trends
+- Analyze flaky test patterns
+
+#### Testing Improvements
+- Implement AI-powered test generation
+- Add automated test case suggestions
+- Improve test execution parallelization
+- Enhance test debugging capabilities
+
+---
+
+**Rule Version**: 1.0.0
+**Last Updated**: 2025-12-18
+**Mechanism**: react-testing-automation

@@ -1,0 +1,146 @@
+{
+  "name": "React Build Automation",
+  "description": "Automated build optimization, code splitting, and performance monitoring for React applications",
+  "enabled": true,
+  "version": "1.0.0",
+  "rules": ["react-build-automation.mdc"],
+  "dependencies": ["test-driven-development"],
+  "configuration": {
+    "optimization_levels": {
+      "basic": {
+        "code_splitting": false,
+        "minification": true,
+        "compression": true,
+        "tree_shaking": true
+      },
+      "advanced": {
+        "code_splitting": true,
+        "minification": true,
+        "compression": true,
+        "tree_shaking": true,
+        "lazy_loading": true,
+        "preload": true
+      },
+      "enterprise": {
+        "code_splitting": true,
+        "minification": true,
+        "compression": true,
+        "tree_shaking": true,
+        "lazy_loading": true,
+        "preload": true,
+        "service_worker": true,
+        "pwa_manifest": true
+      }
+    },
+    "performance_targets": {
+      "bundle_size": "2MB",
+      "first_contentful_paint": "1.5s",
+      "largest_contentful_paint": "2.5s",
+      "first_input_delay": "100ms",
+      "cumulative_layout_shift": "0.1"
+    },
+    "build_tools": {
+      "vite": {
+        "enabled": true,
+        "config_template": "./templates/vite.config.ts",
+        "plugins": ["react", "compression", "analyzer"]
+      },
+      "webpack": {
+        "enabled": false,
+        "config_template": "./templates/webpack.config.js",
+        "plugins": ["compression", "analyzer", "optimization"]
+      },
+      "rollup": {
+        "enabled": false,
+        "config_template": "./templates/rollup.config.js"
+      }
+    },
+    "code_splitting": {
+      "strategy": "route-based",
+      "chunk_names": {
+        "vendor": "vendor.[hash].js",
+        "components": "components.[hash].js",
+        "utils": "utils.[hash].js"
+      },
+      "dynamic_imports": true,
+      "preload_chunks": true
+    },
+    "asset_optimization": {
+      "images": {
+        "compression": true,
+        "formats": ["webp", "avif"],
+        "sizes": [480, 768, 1024, 1920]
+      },
+      "fonts": {
+        "preload": true,
+        "display": "swap",
+        "subsets": ["latin", "latin-ext"]
+      },
+      "css": {
+        "minification": true,
+        "purge_unused": true,
+        "critical_css": true
+      }
+    },
+    "monitoring": {
+      "bundle_analyzer": {
+        "enabled": true,
+        "report_path": "./reports/bundle-analysis.html",
+        "open_browser": true
+      },
+      "performance_budget": {
+        "enabled": true,
+        "budgets": [
+          {
+            "type": "bundle",
+            "maximumWarning": "2MB",
+            "maximumError": "3MB"
+          }
+        ]
+      },
+      "lighthouse_ci": {
+        "enabled": true,
+        "config_path": "./lighthouserc.js"
+      }
+    }
+  },
+  "automation": {
+    "pre_build_hooks": [
+      "npm run type-check",
+      "npm run lint",
+      "npm run test:coverage"
+    ],
+    "post_build_hooks": [
+      "npm run analyze-bundle",
+      "npm run lighthouse-ci",
+      "npm run performance-check"
+    ],
+    "optimization_triggers": {
+      "bundle_size_threshold": "2.5MB",
+      "performance_regression": true,
+      "manual_trigger": true
+    }
+  },
+  "integration": {
+    "ci_cd": {
+      "github_actions": {
+        "enabled": true,
+        "workflow_template": "./templates/github-actions.yml"
+      },
+      "gitlab_ci": {
+        "enabled": false,
+        "config_template": "./templates/gitlab-ci.yml"
+      }
+    },
+    "deployment": {
+      "vercel": {
+        "enabled": false,
+        "config_template": "./templates/vercel.json"
+      },
+      "netlify": {
+        "enabled": false,
+        "config_template": "./templates/netlify.toml"
+      }
+    }
+  }
+}

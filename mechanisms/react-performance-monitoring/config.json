@@ -1,0 +1,175 @@
+{
+  "name": "React Performance Monitoring",
+  "description": "Comprehensive performance monitoring and optimization for React applications",
+  "enabled": true,
+  "version": "1.0.0",
+  "rules": ["react-performance-monitoring.mdc"],
+  "dependencies": ["react-build-automation"],
+  "configuration": {
+    "core_web_vitals": {
+      "enabled": true,
+      "targets": {
+        "lcp": 2500,
+        "fid": 100,
+        "cls": 0.1
+      },
+      "reporting": {
+        "console": true,
+        "analytics": false,
+        "external_service": false
+      }
+    },
+    "react_profiler": {
+      "enabled": true,
+      "development": true,
+      "production": false,
+      "log_slow_updates": true,
+      "slow_update_threshold": 16
+    },
+    "bundle_monitoring": {
+      "enabled": true,
+      "size_limits": {
+        "warning": "2MB",
+        "error": "3MB"
+      },
+      "chunk_analysis": true,
+      "unused_dependencies": true
+    },
+    "runtime_monitoring": {
+      "enabled": true,
+      "memory_leaks": true,
+      "render_performance": true,
+      "network_requests": true,
+      "error_boundaries": true
+    },
+    "performance_budget": {
+      "enabled": true,
+      "budgets": [
+        {
+          "resourceSizes": [
+            {
+              "resourceType": "total",
+              "budget": 3000000
+            },
+            {
+              "resourceType": "javascript",
+              "budget": 2000000
+            }
+          ],
+          "resourceCounts": [
+            {
+              "resourceType": "total",
+              "budget": 200
+            }
+          ],
+          "timings": [
+            {
+              "metric": "interactive",
+              "budget": 5000
+            }
+          ]
+        }
+      ]
+    },
+    "monitoring_tools": {
+      "web_vitals": {
+        "enabled": true,
+        "version": "^3.5.0",
+        "report_all_changes": true
+      },
+      "react_devtools": {
+        "enabled": true,
+        "profiler": true
+      },
+      "lighthouse": {
+        "enabled": true,
+        "ci": true,
+        "performance_threshold": 90
+      },
+      "performance_observer": {
+        "enabled": true,
+        "measure_paint": true,
+        "measure_navigation": true,
+        "measure_resource": true
+      }
+    },
+    "error_tracking": {
+      "enabled": true,
+      "error_boundary": true,
+      "unhandled_rejections": true,
+      "console_errors": true,
+      "reporting_service": "console"
+    },
+    "analytics": {
+      "enabled": false,
+      "provider": "google-analytics",
+      "custom_events": {
+        "performance_marks": true,
+        "web_vitals": true,
+        "errors": true
+      }
+    }
+  },
+  "automation": {
+    "development": {
+      "performance_overlay": true,
+      "devtools_integration": true,
+      "hot_reload_optimization": true
+    },
+    "production": {
+      "error_reporting": true,
+      "performance_tracking": true,
+      "bundle_analysis": true
+    },
+    "alerting": {
+      "performance_regression": {
+        "enabled": true,
+        "threshold": 10,
+        "notification": "console"
+      },
+      "error_rate": {
+        "enabled": true,
+        "threshold": 5,
+        "notification": "console"
+      }
+    }
+  },
+  "reporting": {
+    "dashboard": {
+      "enabled": true,
+      "metrics": [
+        "core_web_vitals",
+        "bundle_size",
+        "render_time",
+        "memory_usage",
+        "error_rate"
+      ],
+      "update_interval": "daily"
+    },
+    "reports": {
+      "performance_report": {
+        "enabled": true,
+        "format": "json",
+        "output_path": "./performance-reports/"
+      },
+      "bundle_report": {
+        "enabled": true,
+        "format": "html",
+        "output_path": "./bundle-reports/"
+      }
+    }
+  },
+  "optimization": {
+    "automatic_fixes": {
+      "enabled": false,
+      "safe_fixes_only": true
+    },
+    "recommendations": {
+      "enabled": true,
+      "code_splitting": true,
+      "lazy_loading": true,
+      "image_optimization": true,
+      "bundle_optimization": true
+    }
+  }
+}

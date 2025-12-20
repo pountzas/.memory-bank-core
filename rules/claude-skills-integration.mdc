@@ -1,0 +1,338 @@
+---
+alwaysApply: true
+---
+
+## Claude Skills Integration Rules
+
+### Core Integration Principles
+
+1. **AI-Powered Development**: Specialized Claude AI skills enhance development capabilities
+2. **Automated Skill Discovery**: Skills automatically discovered and integrated into workflow
+3. **Memory Bank Bridge**: Skills integrated with memory bank for enhanced context awareness
+4. **Quality Assurance**: Skill execution tracked and validated for reliability
+
+### Skill Integration Standards
+
+#### Skill Categories and Requirements
+
+- **Frontend Skills**: UI/UX enhancement, component optimization, responsive design
+- **Backend Skills**: API development, database optimization, server architecture
+- **Data Skills**: Analytics, visualization, data processing, business intelligence
+- **Content Skills**: Documentation, copywriting, content strategy, marketing
+- **Business Skills**: Strategy, validation, financial modeling, market analysis
+- **Development Skills**: Code quality, testing, performance, security
+
+#### Quality Gates
+
+- [ ] Skills properly categorized and tagged
+- [ ] Skill metadata includes version and compatibility
+- [ ] Skill execution tracked with success/failure metrics
+- [ ] Skill templates validated for correctness
+- [ ] Memory bank integration working properly
+
+### Automated Skill Workflow
+
+#### Skill Discovery and Registration
+
+```bash
+# Discover available skills
+npm run skills:discover
+
+# Register new skills
+npm run skills:register
+
+# Validate skill integration
+npm run skills:validate
+```
+
+#### Skill Invocation
+
+```bash
+# Invoke skill with context
+npm run skills:invoke -- --skill frontend-enhancer --context component
+
+# Skills with memory bank integration
+npm run skills:invoke -- --skill codebase-documenter --memory-bank
+
+# Batch skill execution
+npm run skills:batch -- --skills "test-specialist,tech-debt-analyzer"
+```
+
+### Skill Configuration Standards
+
+#### Skill Metadata Structure
+
+```json
+{
+  "name": "frontend-enhancer",
+  "description": "Enhances frontend components for better UX and performance",
+  "version": "1.0.0",
+  "category": "frontend",
+  "capabilities": [
+    "component_optimization",
+    "responsive_design",
+    "accessibility_improvement",
+    "performance_enhancement"
+  ],
+  "dependencies": ["react", "tailwind"],
+  "templates": ["frontend-enhancement"],
+  "triggers": ["component_creation", "component_modification"],
+  "quality_checks": {
+    "accessibility_score": 90,
+    "performance_impact": "positive",
+    "code_quality": "improved"
+  }
+}
+```
+
+### Memory Bank Integration
+
+#### Skill Context Awareness
+
+```javascript
+// Automatic context gathering for skills
+const gatherSkillContext = async (skillName, projectContext) => {
+  const context = {
+    // Memory bank data
+    projectBrief: await memoryBank.getProjectBrief(),
+    activeContext: await memoryBank.getActiveContext(),
+    progressLog: await memoryBank.getProgressLog(),
+
+    // Project data
+    codebase: await analyzeCodebase(),
+    dependencies: await getDependencies(),
+    configuration: await getProjectConfig(),
+
+    // Skill-specific data
+    skillMetadata: await getSkillMetadata(skillName),
+    previousExecutions: await getSkillHistory(skillName),
+  };
+
+  return context;
+};
+```
+
+#### Skill Execution Tracking
+
+```javascript
+// Track skill execution and outcomes
+const executeSkill = async (skillName, context) => {
+  const executionId = generateId();
+
+  // Pre-execution tracking
+  await trackSkillExecution({
+    id: executionId,
+    skill: skillName,
+    context: context,
+    startTime: Date.now(),
+    status: "running",
+  });
+
+  try {
+    // Execute skill
+    const result = await invokeSkill(skillName, context);
+
+    // Post-execution tracking
+    await trackSkillExecution({
+      id: executionId,
+      result: result,
+      endTime: Date.now(),
+      status: "completed",
+      metrics: calculateMetrics(result),
+    });
+
+    return result;
+  } catch (error) {
+    // Error tracking
+    await trackSkillExecution({
+      id: executionId,
+      error: error.message,
+      endTime: Date.now(),
+      status: "failed",
+    });
+
+    throw error;
+  }
+};
+```
+
+### Skill Categories and Capabilities
+
+#### Frontend Skills (`frontend/`)
+
+- **UI/UX Enhancement**: Component design, user experience optimization
+- **Responsive Design**: Mobile-first approach, cross-device compatibility
+- **Performance Optimization**: Rendering efficiency, bundle size reduction
+- **Accessibility**: WCAG compliance, screen reader support
+
+#### Backend Skills (`backend/`)
+
+- **API Development**: REST/GraphQL design, endpoint optimization
+- **Database Design**: Schema optimization, query performance
+- **Server Architecture**: Scalability, security, reliability
+- **Containerization**: Docker setup, orchestration
+
+#### Data Skills (`data/`)
+
+- **Analytics**: Data processing, statistical analysis, insights generation
+- **Visualization**: Chart creation, dashboard design, data presentation
+- **Business Intelligence**: KPI tracking, trend analysis, reporting
+- **Data Processing**: ETL pipelines, data cleaning, transformation
+
+#### Content Skills (`content/`)
+
+- **Documentation**: API docs, user guides, technical writing
+- **Copywriting**: Marketing copy, product descriptions, messaging
+- **Content Strategy**: SEO optimization, content planning
+- **Marketing**: Campaign creation, social media content
+
+#### Business Skills (`business/`)
+
+- **Strategy**: Market analysis, competitive research, positioning
+- **Validation**: MVP testing, user feedback analysis, iteration
+- **Financial**: Budgeting, forecasting, ROI analysis
+- **Operations**: Process optimization, workflow improvement
+
+#### Development Skills (`development/`)
+
+- **Code Quality**: Refactoring, standards enforcement, best practices
+- **Testing**: Test coverage, automated testing, quality assurance
+- **Performance**: Optimization, monitoring, bottleneck identification
+- **Security**: Vulnerability assessment, secure coding practices
+
+### Skill Template System
+
+#### Template Generation
+
+```javascript
+// Automatic template generation for skills
+const generateSkillTemplate = async (skillName, context) => {
+  const skillMetadata = await getSkillMetadata(skillName);
+  const templateConfig = skillMetadata.templates[0]; // Primary template
+
+  const template = {
+    id: `${skillName}-template-${Date.now()}`,
+    skill: skillName,
+    context: context,
+    parameters: await generateParameters(skillName, context),
+    validation: await generateValidationRules(skillName),
+    execution: await generateExecutionPlan(skillName, context),
+  };
+
+  // Store template in memory bank
+  await memoryBank.storeTemplate(template);
+
+  return template;
+};
+```
+
+#### Template Categories
+
+- **Enhancement Templates**: Improve existing code/components
+- **Generation Templates**: Create new code/components
+- **Analysis Templates**: Provide insights and recommendations
+- **Optimization Templates**: Performance and quality improvements
+- **Documentation Templates**: Generate documentation and guides
+
+### Quality Assurance and Validation
+
+#### Skill Validation Checks
+
+- [ ] Skill metadata is complete and accurate
+- [ ] Skill dependencies are properly declared
+- [ ] Skill templates are valid and functional
+- [ ] Skill execution produces expected results
+- [ ] Skill integration with memory bank works correctly
+
+#### Performance Monitoring
+
+- [ ] Skill execution time tracked and optimized
+- [ ] Skill success rate monitored and maintained > 95%
+- [ ] Skill context gathering is efficient
+- [ ] Memory bank queries are optimized
+
+### CI/CD Integration
+
+#### Skill Pipeline Integration
+
+```yaml
+# .github/workflows/skills.yml
+name: Skill Integration
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 */6 * * *" # Every 6 hours for skill updates
+
+jobs:
+  skill-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Discover skills
+        run: npm run skills:discover
+
+      - name: Validate skills
+        run: npm run skills:validate
+
+      - name: Test skill integration
+        run: npm run skills:test
+
+  skill-execution:
+    runs-on: ubuntu-latest
+    needs: skill-validation
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Execute scheduled skills
+        run: npm run skills:execute-scheduled
+
+      - name: Update memory bank
+        run: npm run memory-bank:update
+
+      - name: Commit skill results
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: skill execution results"
+```
+
+### Learning and Evolution
+
+#### Skill Analytics
+
+- Track skill usage patterns and effectiveness
+- Identify most valuable skills for the project
+- Measure impact of skills on development velocity
+- Analyze skill success rates and failure patterns
+
+#### Skill Evolution
+
+- Update skill templates based on successful patterns
+- Add new skills based on project needs
+- Improve skill context gathering and execution
+- Enhance skill integration with memory bank
+
+#### Quality Improvements
+
+- Implement skill performance benchmarking
+- Add skill testing and validation frameworks
+- Create skill dependency management
+- Develop skill recommendation system
+
+---
+
+**Rule Version**: 1.0.0
+**Last Updated**: 2025-12-18
+**Mechanism**: claude-skills-integration

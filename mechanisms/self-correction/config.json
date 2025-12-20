@@ -1,0 +1,199 @@
+{
+  "name": "Self-Correction Learning System",
+  "description": "AI-powered self-correction mechanism that learns from mistakes and continuously improves system behavior",
+  "enabled": true,
+  "version": "1.0.0",
+  "rules": ["self-correction.mdc"],
+  "dependencies": ["all"],
+  "configuration": {
+    "learning_modes": {
+      "active": true,
+      "passive": true,
+      "predictive": false
+    },
+    "correction_types": {
+      "command_errors": true,
+      "template_failures": true,
+      "mechanism_issues": true,
+      "configuration_errors": true,
+      "user_feedback": true,
+      "performance_regressions": true
+    },
+    "learning_sources": {
+      "command_execution": true,
+      "template_usage": true,
+      "mechanism_performance": true,
+      "user_interactions": true,
+      "error_logs": true,
+      "success_metrics": true
+    },
+    "correction_actions": {
+      "rule_updates": true,
+      "template_modifications": true,
+      "mechanism_improvements": true,
+      "configuration_fixes": true,
+      "documentation_updates": true,
+      "preventive_measures": true
+    },
+    "intelligence_levels": {
+      "pattern_recognition": true,
+      "root_cause_analysis": true,
+      "preventive_suggestions": true,
+      "automated_fixes": true,
+      "learning_transfer": false
+    },
+    "monitoring_scope": {
+      "all_mechanisms": true,
+      "all_templates": true,
+      "all_commands": true,
+      "user_sessions": true,
+      "system_performance": true
+    }
+  },
+  "automation": {
+    "continuous_learning": {
+      "enabled": true,
+      "real_time_analysis": true,
+      "batch_processing": "hourly",
+      "pattern_detection": "daily"
+    },
+    "error_prevention": {
+      "enabled": true,
+      "command_validation": true,
+      "template_verification": true,
+      "mechanism_testing": true
+    },
+    "improvement_cycles": {
+      "enabled": true,
+      "review_frequency": "weekly",
+      "update_frequency": "daily",
+      "rollback_safety": true
+    },
+    "feedback_loops": {
+      "user_feedback_collection": true,
+      "success_rate_tracking": true,
+      "performance_monitoring": true,
+      "continuous_validation": true
+    }
+  },
+  "intelligence": {
+    "pattern_analysis": {
+      "error_clustering": true,
+      "frequency_analysis": true,
+      "correlation_detection": true,
+      "trend_identification": true
+    },
+    "root_cause_engine": {
+      "enabled": true,
+      "depth_analysis": 3,
+      "confidence_threshold": 0.8,
+      "evidence_collection": true
+    },
+    "predictive_modeling": {
+      "enabled": false,
+      "risk_assessment": true,
+      "failure_prediction": true,
+      "preventive_actions": true
+    },
+    "learning_algorithms": {
+      "reinforcement_learning": false,
+      "supervised_learning": true,
+      "unsupervised_clustering": true,
+      "anomaly_detection": true
+    }
+  },
+  "data_collection": {
+    "event_tracking": {
+      "command_executions": true,
+      "template_instantiations": true,
+      "mechanism_calls": true,
+      "user_interactions": true,
+      "error_occurrences": true
+    },
+    "metrics_collection": {
+      "success_rates": true,
+      "performance_metrics": true,
+      "error_rates": true,
+      "user_satisfaction": true,
+      "learning_effectiveness": true
+    },
+    "data_retention": {
+      "short_term": "30_days",
+      "long_term": "1_year",
+      "anonymized_storage": true,
+      "privacy_compliant": true
+    }
+  },
+  "correction_engine": {
+    "automated_fixes": {
+      "safe_fixes_only": true,
+      "user_approval_required": true,
+      "rollback_capable": true,
+      "testing_required": true
+    },
+    "rule_generation": {
+      "enabled": true,
+      "confidence_threshold": 0.9,
+      "peer_review_required": false,
+      "gradual_rollout": true
+    },
+    "template_improvement": {
+      "enabled": true,
+      "a_b_testing": false,
+      "performance_validation": true,
+      "user_feedback_integration": true
+    },
+    "mechanism_optimization": {
+      "enabled": true,
+      "performance_monitoring": true,
+      "error_rate_tracking": true,
+      "continuous_improvement": true
+    }
+  },
+  "reporting": {
+    "learning_reports": {
+      "enabled": true,
+      "frequency": "weekly",
+      "format": "comprehensive",
+      "distribution": "memory-bank"
+    },
+    "improvement_metrics": {
+      "enabled": true,
+      "real_time_dashboard": false,
+      "trend_analysis": true,
+      "predictive_insights": false
+    },
+    "error_analysis": {
+      "enabled": true,
+      "root_cause_reports": true,
+      "prevention_effectiveness": true,
+      "cost_savings_analysis": true
+    }
+  },
+  "safety_measures": {
+    "rollback_capabilities": {
+      "enabled": true,
+      "automatic_rollback": false,
+      "manual_rollback": true,
+      "backup_creation": true
+    },
+    "validation_checks": {
+      "enabled": true,
+      "pre_deployment_testing": true,
+      "post_deployment_monitoring": true,
+      "user_impact_assessment": true
+    },
+    "ethical_considerations": {
+      "privacy_protection": true,
+      "bias_detection": false,
+      "fairness_monitoring": false,
+      "transparency_requirements": true
+    },
+    "risk_management": {
+      "enabled": true,
+      "risk_assessment": true,
+      "mitigation_strategies": true,
+      "emergency_procedures": true
+    }
+  }
+}

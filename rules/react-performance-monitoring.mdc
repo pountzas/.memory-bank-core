@@ -1,0 +1,371 @@
+---
+alwaysApply: true
+---
+
+## React Performance Monitoring Rules
+
+### Core Performance Principles
+
+1. **Automated Monitoring**: Performance metrics automatically tracked and reported
+2. **Real-time Alerts**: Performance regressions trigger immediate notifications
+3. **Core Web Vitals**: Focus on user-centric performance metrics
+4. **Continuous Optimization**: Performance improvements applied automatically
+
+### Performance Standards
+
+#### Core Web Vitals Requirements
+- **Largest Contentful Paint (LCP)**: < 2.5 seconds
+- **First Input Delay (FID)**: < 100 milliseconds
+- **Cumulative Layout Shift (CLS)**: < 0.1
+- **First Contentful Paint (FCP)**: < 1.8 seconds
+- **Time to First Byte (TTFB)**: < 800 milliseconds
+
+#### React Performance Gates
+- [ ] Component render time < 16ms (60fps)
+- [ ] Bundle size < 200KB gzipped
+- [ ] Memory usage stable over time
+- [ ] No memory leaks detected
+- [ ] React profiler warnings resolved
+
+### Automated Performance Monitoring
+
+#### Real-time Performance Tracking
+```bash
+# Start performance monitoring
+npm run perf:monitor
+
+# Monitor in development
+npm run dev:perf
+
+# Generate performance report
+npm run perf:report
+```
+
+#### Performance Budgets
+```javascript
+// Automatic performance budget enforcement
+const performanceBudget = {
+  lighthouse: {
+    performance: 90,
+    accessibility: 90,
+    bestPractices: 90,
+    seo: 90,
+  },
+  bundle: {
+    size: '200 KB',
+    gzip: true,
+  },
+  webVitals: {
+    lcp: 2500,
+    fid: 100,
+    cls: 0.1,
+  },
+};
+```
+
+### Performance Monitoring Configuration
+
+#### React Profiler Integration
+```javascript
+// Automatic React Profiler setup
+import { Profiler } from 'react';
+import { reportProfile } from './performance-monitoring';
+
+function App() {
+  return (
+    <Profiler id="App" onRender={reportProfile}>
+      <AppContent />
+    </Profiler>
+  );
+}
+
+// Performance monitoring utility
+export const reportProfile = (
+  id: string,
+  phase: 'mount' | 'update',
+  actualDuration: number,
+  baseDuration: number,
+  startTime: number,
+  commitTime: number
+) => {
+  // Report to analytics
+  if (actualDuration > 16) { // Over 60fps budget
+    console.warn(`Performance issue in ${id}: ${actualDuration}ms`);
+    // Send to monitoring service
+  }
+};
+```
+
+### Core Web Vitals Tracking
+
+#### Automatic Vitals Monitoring
+```javascript
+// Automatic Core Web Vitals tracking
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+
+if (typeof window !== 'undefined') {
+  getCLS((metric) => {
+    console.log('CLS:', metric);
+    // Send to analytics/monitoring service
+    reportMetric('CLS', metric);
+  });
+
+  getFID((metric) => {
+    console.log('FID:', metric);
+    reportMetric('FID', metric);
+  });
+
+  getFCP((metric) => {
+    console.log('FCP:', metric);
+    reportMetric('FCP', metric);
+  });
+
+  getLCP((metric) => {
+    console.log('LCP:', metric);
+    reportMetric('LCP', metric);
+  });
+
+  getTTFB((metric) => {
+    console.log('TTFB:', metric);
+    reportMetric('TTFB', metric);
+  });
+}
+```
+
+### Bundle Analysis and Optimization
+
+#### Automatic Bundle Monitoring
+```javascript
+// Bundle analyzer integration
+if (process.env.NODE_ENV === 'development' && process.env.ANALYZE === 'true') {
+  const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+  config.plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'server',
+      openAnalyzer: true,
+      reportFilename: 'bundle-report.html',
+    })
+  );
+}
+
+// Bundle size monitoring
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+config.plugins.push(
+  new BundleAnalyzerPlugin({
+    analyzerMode: 'static',
+    reportFilename: 'bundle-report.html',
+    openAnalyzer: false,
+    generateStatsFile: true,
+    statsFilename: 'bundle-stats.json',
+  })
+);
+```
+
+### Error Tracking and Monitoring
+
+#### Automatic Error Boundary
+```tsx
+// Global error boundary with performance monitoring
+import React from 'react';
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // Report error to monitoring service
+    reportError(error, errorInfo);
+
+    // Performance impact analysis
+    if (error.message.includes('performance')) {
+      reportPerformanceIssue(error);
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div>Something went wrong. Performance issue detected.</div>;
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+```
+
+### Memory Leak Detection
+
+#### Automatic Memory Monitoring
+```javascript
+// Memory leak detection
+if (process.env.NODE_ENV === 'development') {
+  const { whyDidYouUpdate } = require('@welldone-software/why-did-you-update');
+
+  whyDidYouUpdate(React, {
+    include: /^pure/,
+    exclude: /^connect|Route$/,
+  });
+}
+
+// Memory usage tracking
+const reportMemoryUsage = () => {
+  if (performance.memory) {
+    const { usedJSHeapSize, totalJSHeapSize, jsHeapSizeLimit } = performance.memory;
+
+    if (usedJSHeapSize > jsHeapSizeLimit * 0.8) {
+      console.warn('High memory usage detected');
+      reportMemoryIssue({
+        used: usedJSHeapSize,
+        total: totalJSHeapSize,
+        limit: jsHeapSizeLimit,
+      });
+    }
+  }
+};
+
+// Monitor memory every 30 seconds
+setInterval(reportMemoryUsage, 30000);
+```
+
+### CI/CD Performance Integration
+
+#### Performance Testing Pipeline
+```yaml
+# .github/workflows/performance.yml
+name: Performance Monitoring
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '0 0 * * 1' # Weekly performance check
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: http://localhost:3000
+          configPath: .lighthouserc.json
+
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: lighthouse-results
+          path: .lighthouseci/
+
+  bundle-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and analyze bundle
+        run: npm run build:analyze
+
+      - name: Upload bundle report
+        uses: actions/upload-artifact@v3
+        with:
+          name: bundle-report
+          path: bundle-report.html
+```
+
+### Performance Optimization Rules
+
+#### Automatic Optimizations Applied
+- **React.memo**: Automatic memoization of components
+- **useMemo/useCallback**: Automatic optimization of expensive computations
+- **Lazy loading**: Automatic code splitting for routes
+- **Image optimization**: Automatic WebP conversion and responsive images
+- **Font optimization**: Automatic font subsetting and preloading
+
+#### Performance Alerts
+```javascript
+// Automatic performance alerting
+const performanceThresholds = {
+  renderTime: 16, // ms
+  bundleSize: 200 * 1024, // bytes
+  memoryUsage: 50 * 1024 * 1024, // bytes
+};
+
+const checkPerformance = () => {
+  // Check render performance
+  if (window.performance.getEntriesByType) {
+    const navigation = window.performance.getEntriesByType('navigation')[0];
+    if (navigation.loadEventEnd - navigation.loadEventStart > 3000) {
+      alert('Slow page load detected');
+    }
+  }
+};
+
+// Run performance checks
+window.addEventListener('load', checkPerformance);
+```
+
+### Quality Assurance
+
+#### Performance Validation
+- [ ] Core Web Vitals meet thresholds
+- [ ] Bundle size within limits
+- [ ] Memory usage stable
+- [ ] No performance regressions
+- [ ] Lighthouse scores acceptable
+
+#### Monitoring Tasks
+- [ ] Review performance metrics weekly
+- [ ] Update performance budgets quarterly
+- [ ] Audit performance optimizations annually
+- [ ] Monitor Core Web Vitals trends
+
+### Learning & Evolution
+
+#### Performance Analytics
+- Track performance trends over time
+- Identify performance bottlenecks
+- Measure impact of optimizations
+- Predict performance issues
+
+#### Optimization Evolution
+- Update performance techniques based on analytics
+- Implement new optimization strategies
+- Improve monitoring capabilities
+- Enhance alerting and reporting
+
+---
+
+**Rule Version**: 1.0.0
+**Last Updated**: 2025-12-18
+**Mechanism**: react-performance-monitoring

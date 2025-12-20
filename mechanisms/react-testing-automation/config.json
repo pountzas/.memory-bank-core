@@ -1,0 +1,169 @@
+{
+  "name": "React Testing Automation",
+  "description": "Comprehensive automated testing setup for React applications including unit, integration, and E2E tests",
+  "enabled": true,
+  "version": "1.0.0",
+  "rules": ["react-testing-automation.mdc"],
+  "dependencies": ["test-driven-development"],
+  "configuration": {
+    "testing_frameworks": {
+      "jest": {
+        "enabled": true,
+        "version": "^29.0.0",
+        "config_template": "./templates/jest.config.js",
+        "setup_files": ["./setupTests.js"]
+      },
+      "vitest": {
+        "enabled": false,
+        "version": "^1.0.0",
+        "config_template": "./templates/vitest.config.ts"
+      }
+    },
+    "testing_libraries": {
+      "react_testing_library": {
+        "enabled": true,
+        "version": "^14.0.0",
+        "custom_render": true
+      },
+      "testing_library_jest_dom": {
+        "enabled": true,
+        "version": "^6.0.0"
+      },
+      "testing_library_user_event": {
+        "enabled": true,
+        "version": "^14.0.0"
+      }
+    },
+    "e2e_testing": {
+      "playwright": {
+        "enabled": true,
+        "version": "^1.40.0",
+        "config_template": "./templates/playwright.config.ts",
+        "browsers": ["chromium", "firefox", "webkit"]
+      },
+      "cypress": {
+        "enabled": false,
+        "version": "^13.0.0",
+        "config_template": "./templates/cypress.config.ts"
+      }
+    },
+    "visual_regression": {
+      "chromatic": {
+        "enabled": true,
+        "version": "^11.0.0",
+        "config_template": "./templates/chromatic.config.json"
+      },
+      "storybook_test": {
+        "enabled": true,
+        "version": "^8.0.0"
+      }
+    },
+    "coverage": {
+      "enabled": true,
+      "tool": "jest",
+      "thresholds": {
+        "global": {
+          "branches": 80,
+          "functions": 80,
+          "lines": 80,
+          "statements": 80
+        },
+        "individual": {
+          "branches": 70,
+          "functions": 70,
+          "lines": 70,
+          "statements": 70
+        }
+      },
+      "exclude": [
+        "**/*.stories.tsx",
+        "**/*.test.tsx",
+        "**/index.ts",
+        "**/types.ts"
+      ],
+      "reporters": ["text", "lcov", "html"]
+    },
+    "accessibility": {
+      "axe_core": {
+        "enabled": true,
+        "version": "^4.8.0"
+      },
+      "jest_axe": {
+        "enabled": true,
+        "version": "^8.0.0"
+      },
+      "rules": {
+        "wcag2a": true,
+        "wcag2aa": true,
+        "best-practice": true
+      }
+    },
+    "performance": {
+      "jsdom_performance": {
+        "enabled": true
+      },
+      "mock_date": {
+        "enabled": true,
+        "version": "^3.0.0"
+      }
+    }
+  },
+  "automation": {
+    "pre_commit_hooks": [
+      "npm run type-check",
+      "npm run lint",
+      "npm run test:unit",
+      "npm run test:a11y"
+    ],
+    "ci_pipeline": {
+      "unit_tests": true,
+      "integration_tests": true,
+      "e2e_tests": true,
+      "visual_tests": true,
+      "coverage_check": true,
+      "performance_tests": true
+    },
+    "test_generation": {
+      "auto_generate_tests": true,
+      "test_templates": {
+        "component": "./templates/component.test.tsx",
+        "hook": "./templates/hook.test.tsx",
+        "util": "./templates/util.test.tsx"
+      }
+    }
+  },
+  "reporting": {
+    "junit": {
+      "enabled": true,
+      "output_path": "./test-results/junit.xml"
+    },
+    "coverage_report": {
+      "enabled": true,
+      "output_path": "./coverage/lcov-report/index.html"
+    },
+    "test_results": {
+      "enabled": true,
+      "output_path": "./test-results/results.json"
+    }
+  },
+  "integration": {
+    "ci_cd": {
+      "github_actions": {
+        "enabled": true,
+        "workflow_template": "./templates/github-actions-testing.yml"
+      },
+      "parallel_jobs": true,
+      "fail_fast": false
+    },
+    "code_quality": {
+      "sonarcloud": {
+        "enabled": false,
+        "config_template": "./templates/sonarcloud.properties"
+      },
+      "codecov": {
+        "enabled": true,
+        "config_template": "./templates/codecov.yml"
+      }
+    }
+  }
+}

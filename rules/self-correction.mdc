@@ -1,0 +1,386 @@
+---
+alwaysApply: true
+---
+
+## Self-Correction Learning System Rules
+
+### Core Learning Principles
+
+1. **Continuous Learning**: AI-powered system that learns from mistakes and improves behavior
+2. **Pattern Recognition**: Identifies recurring issues and prevents future occurrences
+3. **Root Cause Analysis**: Deep analysis to understand underlying problems
+4. **Automated Improvement**: Self-correction without human intervention when safe
+
+### Learning Standards
+
+#### Learning Modes Requirements
+- **Active Learning**: Real-time analysis and correction during development
+- **Passive Learning**: Background analysis of historical data and patterns
+- **Predictive Learning**: Anticipates issues before they occur
+- **Reinforcement Learning**: Learns from successful corrections and failures
+
+#### Quality Gates
+- [ ] Error detection accuracy > 95%
+- [ ] Correction success rate > 90%
+- [ ] False positive rate < 5%
+- [ ] Learning cycle time < 24 hours
+- [ ] System stability maintained during corrections
+
+### Automated Learning Workflow
+
+#### Error Detection and Analysis
+```bash
+# Start learning system
+npm run learn:start
+
+# Analyze recent errors
+npm run learn:analyze-errors
+
+# Generate correction recommendations
+npm run learn:recommend-corrections
+
+# Apply safe corrections automatically
+npm run learn:auto-correct
+```
+
+#### Learning Cycle Management
+```bash
+# Daily learning cycle
+npm run learn:daily-cycle
+
+# Weekly pattern analysis
+npm run learn:weekly-analysis
+
+# Monthly improvement assessment
+npm run learn:monthly-review
+```
+
+### Learning Configuration Standards
+
+#### Learning Algorithm Configuration
+```json
+{
+  "learning_algorithms": {
+    "pattern_recognition": {
+      "enabled": true,
+      "algorithms": ["clustering", "classification", "anomaly_detection"],
+      "confidence_threshold": 0.8,
+      "min_samples": 10
+    },
+    "root_cause_analysis": {
+      "enabled": true,
+      "depth_levels": 3,
+      "evidence_collection": true,
+      "correlation_analysis": true
+    },
+    "predictive_modeling": {
+      "enabled": true,
+      "forecast_horizon": 7,
+      "accuracy_target": 0.85,
+      "model_types": ["regression", "classification"]
+    }
+  }
+}
+```
+
+### Error Detection and Classification
+
+#### Error Type Classification
+```javascript
+// Automatic error classification
+const classifyError = (error, context) => {
+  const errorTypes = {
+    // Command execution errors
+    command_failure: /^Command failed|Exit code \d+/,
+
+    // Template errors
+    template_error: /Template.*not found|Invalid template/,
+
+    // Configuration errors
+    config_error: /Invalid configuration|Missing config/,
+
+    // Memory bank errors
+    memory_bank_error: /Memory bank.*error|Context.*missing/,
+
+    // Performance issues
+    performance_issue: /Performance.*degraded|Timeout|Slow/,
+
+    // Quality issues
+    quality_issue: /Lint.*error|Test.*failure|Coverage.*low/
+  };
+
+  for (const [type, pattern] of Object.entries(errorTypes)) {
+    if (pattern.test(error.message)) {
+      return {
+        type,
+        severity: calculateSeverity(error, context),
+        context: extractContext(error, context),
+        suggested_fixes: generateFixes(type, error, context)
+      };
+    }
+  }
+
+  return { type: 'unknown', severity: 'low' };
+};
+```
+
+### Root Cause Analysis
+
+#### Automated Root Cause Engine
+```javascript
+// Root cause analysis implementation
+const analyzeRootCause = async (error, history, context) => {
+  const analysis = {
+    immediate_cause: error.message,
+    contributing_factors: [],
+    root_cause: null,
+    confidence: 0,
+    evidence: []
+  };
+
+  // Analyze error patterns
+  const patterns = await findSimilarErrors(error, history);
+  analysis.contributing_factors = patterns.map(p => p.factor);
+
+  // Deep analysis
+  for (let depth = 1; depth <= 3; depth++) {
+    const causes = await analyzeAtDepth(error, depth, context);
+
+    if (causes.length > 0) {
+      analysis.root_cause = causes[0];
+      analysis.confidence = calculateConfidence(causes[0], evidence);
+      break;
+    }
+  }
+
+  // Generate evidence
+  analysis.evidence = await collectEvidence(analysis.root_cause, context);
+
+  return analysis;
+};
+```
+
+### Correction Generation and Application
+
+#### Automated Correction System
+```javascript
+// Generate and apply corrections
+const generateCorrection = async (analysis, context) => {
+  const correction = {
+    id: generateCorrectionId(),
+    problem: analysis,
+    solution: null,
+    confidence: 0,
+    safety_level: 'unknown',
+    rollback_plan: null
+  };
+
+  // Generate solution based on problem type
+  correction.solution = await generateSolution(analysis.root_cause);
+
+  // Assess safety
+  correction.safety_level = await assessSafety(correction.solution, context);
+
+  // Create rollback plan
+  if (correction.safety_level !== 'safe') {
+    correction.rollback_plan = await createRollbackPlan(correction.solution);
+  }
+
+  // Calculate confidence
+  correction.confidence = calculateSolutionConfidence(
+    correction.solution,
+    analysis.evidence
+  );
+
+  return correction;
+};
+```
+
+#### Safe Correction Application
+```javascript
+// Apply corrections with safety checks
+const applyCorrection = async (correction, context) => {
+  // Pre-application validation
+  const validation = await validateCorrection(correction, context);
+
+  if (!validation.safe) {
+    console.warn('Correction deemed unsafe, requiring manual review');
+    await flagForManualReview(correction);
+    return;
+  }
+
+  // Apply correction
+  try {
+    await executeCorrection(correction.solution);
+
+    // Post-application monitoring
+    const monitoring = await monitorCorrectionImpact(correction, context);
+
+    if (monitoring.successful) {
+      await learnFromSuccess(correction, context);
+    } else {
+      await rollbackCorrection(correction);
+      await learnFromFailure(correction, monitoring, context);
+    }
+
+  } catch (error) {
+    // Emergency rollback
+    await emergencyRollback(correction);
+    await reportCorrectionFailure(correction, error, context);
+  }
+};
+```
+
+### Learning and Memory
+
+#### Pattern Recognition and Learning
+```javascript
+// Pattern recognition and learning
+const learnFromExperience = async (experience, context) => {
+  const learning = {
+    experience_type: experience.type,
+    pattern: extractPattern(experience),
+    outcome: experience.success ? 'positive' : 'negative',
+    context: context,
+    timestamp: Date.now()
+  };
+
+  // Store in learning database
+  await storeLearning(learning);
+
+  // Update patterns
+  await updatePatterns(learning);
+
+  // Adjust future behavior
+  await adjustBehavior(learning);
+
+  // Generate insights
+  const insights = await generateInsights(learning);
+  await storeInsights(insights);
+};
+```
+
+### Quality Assurance and Safety
+
+#### Correction Safety Validation
+- [ ] Correction doesn't break existing functionality
+- [ ] Correction has proper rollback mechanism
+- [ ] Correction is tested in isolated environment first
+- [ ] Correction impact is monitored post-application
+- [ ] Correction can be disabled if issues arise
+
+#### Learning Quality Checks
+- [ ] Learning patterns are statistically significant
+- [ ] Learning doesn't introduce bias or incorrect assumptions
+- [ ] Learning improves system performance over time
+- [ ] Learning respects user preferences and project constraints
+- [ ] Learning outcomes are measurable and verifiable
+
+### Monitoring and Analytics
+
+#### Performance and Effectiveness Tracking
+```javascript
+// Track learning system performance
+const trackLearningMetrics = async () => {
+  const metrics = {
+    error_detection_rate: calculateErrorDetectionRate(),
+    correction_success_rate: calculateCorrectionSuccessRate(),
+    false_positive_rate: calculateFalsePositiveRate(),
+    learning_velocity: calculateLearningVelocity(),
+    system_stability: calculateSystemStability()
+  };
+
+  await storeMetrics(metrics);
+  await analyzeMetricsTrends(metrics);
+
+  // Generate reports
+  if (shouldGenerateReport()) {
+    await generateLearningReport(metrics);
+  }
+};
+```
+
+### CI/CD Integration
+
+#### Learning Pipeline Integration
+```yaml
+# .github/workflows/learning.yml
+name: Learning System
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 */4 * * *' # Every 4 hours for continuous learning
+
+jobs:
+  learn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run learning analysis
+        run: npm run learn:analyze
+
+      - name: Generate corrections
+        run: npm run learn:generate-corrections
+
+      - name: Apply safe corrections
+        run: npm run learn:apply-safe-corrections
+
+      - name: Update learning models
+        run: npm run learn:update-models
+
+      - name: Generate learning report
+        run: npm run learn:generate-report
+
+      - name: Upload learning artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: learning-results
+          path: learning-reports/
+```
+
+### Ethical Considerations and Safety
+
+#### Learning Boundaries
+- **Privacy Protection**: Learning doesn't expose sensitive information
+- **Bias Prevention**: Learning algorithms tested for fairness
+- **Transparency**: Learning decisions are explainable
+- **User Control**: Users can disable or modify learning behavior
+- **Data Ethics**: Learning data handled responsibly
+
+#### Safety Mechanisms
+- **Circuit Breakers**: Learning disabled if error rate exceeds threshold
+- **Human Oversight**: Critical corrections require human approval
+- **Gradual Rollout**: Corrections applied gradually to minimize risk
+- **Monitoring**: Continuous monitoring of learning system health
+- **Emergency Stop**: Ability to disable learning system immediately
+
+### Evolution and Improvement
+
+#### Learning System Evolution
+- Analyze learning effectiveness and identify improvement areas
+- Update learning algorithms based on performance data
+- Add new learning capabilities as technology advances
+- Improve safety mechanisms and ethical considerations
+
+#### Continuous Improvement
+- Regular assessment of learning system performance
+- Updates to learning algorithms and techniques
+- Enhancement of safety and ethical safeguards
+- Expansion of learning capabilities and scope
+
+---
+
+**Rule Version**: 1.0.0
+**Last Updated**: 2025-12-18
+**Mechanism**: self-correction

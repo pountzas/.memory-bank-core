@@ -1,0 +1,228 @@
+---
+alwaysApply: true
+---
+
+## React Component Scaffolding Rules
+
+### Core Component Generation Principles
+
+1. **Automated Scaffolding**: React components are automatically generated with consistent structure
+2. **Best Practices**: Components follow React and TypeScript best practices by default
+3. **Tailwind Integration**: Components are styled with Tailwind CSS for consistency
+4. **Accessibility First**: Components include accessibility features and ARIA support
+
+### Component Generation Standards
+
+#### Component Structure Requirements
+- **TypeScript Interface**: All props properly typed with optional/required distinction
+- **Default Exports**: Components exported as default for clean imports
+- **Named Exports**: Utility functions and types exported as named exports
+- **File Organization**: Component, types, tests, and documentation in same directory
+
+#### Quality Gates
+- [ ] Component follows established naming conventions
+- [ ] Props interface matches component usage
+- [ ] Default props provided for optional parameters
+- [ ] Component includes proper error boundaries
+- [ ] Accessibility attributes included (aria-labels, roles)
+
+### Automated Component Workflow
+
+#### Component Creation
+```bash
+# Generate new component
+npm run generate:component -- --name Button --type ui
+
+# Creates:
+# components/ui/Button/
+# ├── Button.tsx (main component)
+# ├── Button.test.tsx (unit tests)
+# ├── Button.md (documentation)
+# ├── index.ts (exports)
+# └── types.ts (interfaces)
+```
+
+#### Component Types
+- **ui**: Basic UI components (buttons, inputs, forms)
+- **layout**: Layout components (containers, grids, panels)
+- **data**: Data display components (tables, charts, lists)
+- **composite**: Complex components combining multiple ui/layout components
+
+### Component Templates
+
+#### UI Component Template Structure
+```tsx
+import React from 'react';
+import { cn } from '@/lib/utils';
+
+export interface {{ComponentName}}Props extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: 'default' | 'primary' | 'secondary';
+  size?: 'sm' | 'md' | 'lg';
+  loading?: boolean;
+  children: React.ReactNode;
+}
+
+const {{ComponentName}} = React.forwardRef<HTMLDivElement, {{ComponentName}}Props>(
+  ({ className, variant = 'default', size = 'md', loading = false, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          // Base classes
+          'relative',
+          // Variant classes
+          {
+            'bg-white border border-gray-200': variant === 'default',
+            'bg-blue-600 text-white': variant === 'primary',
+            'bg-gray-600 text-white': variant === 'secondary',
+          },
+          // Size classes
+          {
+            'px-2 py-1 text-sm': size === 'sm',
+            'px-4 py-2 text-base': size === 'md',
+            'px-6 py-3 text-lg': size === 'lg',
+          },
+          className
+        )}
+        {...props}
+      >
+        {loading && <div className="absolute inset-0 bg-white/50 flex items-center justify-center">Loading...</div>}
+        {children}
+      </div>
+    );
+  }
+);
+
+{{ComponentName}}.displayName = '{{ComponentName}}';
+
+export { {{ComponentName}} };
+```
+
+### Integration with Development Workflow
+
+#### Pre-commit Component Checks
+```bash
+# Run before committing new components
+npm run lint:components
+npm run test:components
+npm run build:components
+
+# Auto-generate component documentation
+npm run docs:generate:components
+```
+
+#### CI/CD Integration
+```yaml
+# .github/workflows/component-checks.yml
+name: Component Checks
+on:
+  pull_request:
+    paths:
+      - 'components/**'
+      - 'memory-bank/mechanisms/react-component-scaffolding/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm ci
+      - run: npm run lint:components
+      - run: npm run test:components
+      - run: npm run build:components
+      - run: npm run docs:generate:components
+```
+
+### Component Categories
+
+#### UI Components (`components/ui/`)
+- Buttons, inputs, forms, modals, tooltips
+- Focus: Interaction patterns and visual consistency
+- Requirements: Keyboard navigation, focus management
+
+#### Layout Components (`components/layout/`)
+- Containers, grids, sidebars, headers, footers
+- Focus: Responsive behavior and semantic HTML
+- Requirements: CSS Grid/Flexbox, mobile-first design
+
+#### Data Components (`components/data/`)
+- Tables, charts, lists, pagination, filters
+- Focus: Data presentation and manipulation
+- Requirements: Performance with large datasets, accessibility
+
+### Testing Standards
+
+#### Unit Test Requirements
+```tsx
+import { render, screen } from '@testing-library/react';
+import { {{ComponentName}} } from './{{ComponentName}}';
+
+describe('{{ComponentName}}', () => {
+  it('renders correctly', () => {
+    render(<{{ComponentName}}>Test</{{ComponentName}}>);
+    expect(screen.getByText('Test')).toBeInTheDocument();
+  });
+
+  it('applies correct variant classes', () => {
+    render(<{{ComponentName}} variant="primary">Test</{{ComponentName}}>);
+    expect(screen.getByText('Test')).toHaveClass('bg-blue-600');
+  });
+
+  it('handles loading state', () => {
+    render(<{{ComponentName}} loading>Test</{{ComponentName}}>);
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
+});
+```
+
+#### Accessibility Testing
+```tsx
+it('is accessible', async () => {
+  const { container } = render(<{{ComponentName}}>Test</{{ComponentName}}>);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
+```
+
+### Performance & Maintenance
+
+#### Generation Performance
+- Target: < 5 seconds per component generation
+- Memory: < 25MB during generation
+- Dependencies: Automatic resolution of imports
+
+#### Quality Monitoring
+- Coverage: 100% component generation success rate
+- Accuracy: Generated code passes all linting rules
+- Freshness: Templates updated with latest best practices
+- Validation: Automated quality checks on generated components
+
+#### Maintenance Tasks
+- [ ] Review component templates quarterly
+- [ ] Update Tailwind classes for design system changes
+- [ ] Audit generated component quality monthly
+- [ ] Update accessibility patterns as standards evolve
+
+### Learning & Evolution
+
+#### Usage Analytics
+- Track which component types are generated most
+- Identify popular patterns and variants
+- Measure component adoption rates
+
+#### Template Evolution
+- Analyze successful component patterns
+- Update templates based on developer feedback
+- Add new component types based on project needs
+
+#### Quality Improvements
+- Implement AI-powered component suggestions
+- Add automated accessibility validation
+- Enhance TypeScript integration
+- Improve testing template coverage
+
+---
+
+**Rule Version**: 1.0.0
+**Last Updated**: 2025-12-18
+**Mechanism**: react-component-scaffolding

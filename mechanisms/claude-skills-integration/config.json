@@ -1,0 +1,110 @@
+{
+  "name": "Claude Skills Integration",
+  "description": "Integration of specialized Claude AI skills into the memory-bank system for enhanced development capabilities",
+  "enabled": true,
+  "version": "1.0.0",
+  "rules": ["claude-skills-integration.mdc"],
+  "dependencies": ["task-driven-development"],
+  "configuration": {
+    "skills_directory": ".claude/skills",
+    "auto_discovery": true,
+    "skill_categories": {
+      "frontend": ["frontend-enhancer"],
+      "backend": ["docker-containerization", "cicd-pipeline-generator"],
+      "data": [
+        "data-analyst",
+        "csv-data-visualizer",
+        "business-analytics-reporter"
+      ],
+      "content": [
+        "research-paper-writer",
+        "social-media-generator",
+        "pitch-deck"
+      ],
+      "business": ["brand-analyzer", "startup-validator", "finance-manager"],
+      "development": [
+        "codebase-documenter",
+        "tech-debt-analyzer",
+        "test-specialist"
+      ],
+      "documents": ["document-skills", "business-document-generator"],
+      "personal": ["personal-assistant", "travel-planner", "resume-manager"],
+      "creative": ["script-writer", "storyboard-manager"],
+      "marketing": ["seo-optimizer", "social-media-generator"]
+    },
+    "skill_templates": {
+      "auto_generate": true,
+      "template_mapping": {
+        "frontend-enhancer": "frontend-enhancement",
+        "codebase-documenter": "code-documentation",
+        "tech-debt-analyzer": "technical-debt-analysis",
+        "test-specialist": "testing-improvement",
+        "docker-containerization": "containerization-setup",
+        "cicd-pipeline-generator": "pipeline-setup",
+        "brand-analyzer": "brand-analysis",
+        "business-analytics-reporter": "analytics-reporting",
+        "research-paper-writer": "research-writing",
+        "social-media-generator": "social-media-content"
+      }
+    },
+    "integration": {
+      "memory_bank_bridge": true,
+      "task_template_generation": true,
+      "skill_invocation_tracking": true,
+      "performance_metrics": true
+    },
+    "quality_assurance": {
+      "validate_skill_structure": true,
+      "check_skill_dependencies": true,
+      "verify_skill_metadata": true,
+      "test_skill_execution": false
+    }
+  },
+  "automation": {
+    "skill_discovery": {
+      "on_startup": true,
+      "periodic_scan": "daily",
+      "auto_register_templates": true
+    },
+    "skill_invocation": {
+      "track_usage": true,
+      "measure_performance": true,
+      "log_errors": true,
+      "provide_feedback": true
+    },
+    "template_generation": {
+      "auto_create_from_skills": true,
+      "update_existing_templates": true,
+      "validate_template_structure": true
+    }
+  },
+  "reporting": {
+    "skill_usage_stats": {
+      "enabled": true,
+      "metrics": ["invocation_count", "success_rate", "average_duration"],
+      "output_path": "./reports/skill-usage.json"
+    },
+    "skill_health_check": {
+      "enabled": true,
+      "check_frequency": "weekly",
+      "alert_on_failures": true
+    }
+  },
+  "advanced_features": {
+    "skill_chaining": {
+      "enabled": false,
+      "max_chain_length": 3,
+      "supported_patterns": ["analyze_then_implement", "research_then_write"]
+    },
+    "skill_recommendations": {
+      "enabled": true,
+      "learning_algorithm": "usage_based",
+      "context_aware_suggestions": true
+    },
+    "skill_customization": {
+      "enabled": true,
+      "allow_parameter_override": true,
+      "support_custom_instructions": true
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Terminal CWD Safety",
+  "description": "Prevents running terminal commands from the wrong folder by enforcing repo_path-based cwd verification and explicit Set-Location before commands.",
+  "enabled": true,
+  "version": "1.0.0",
+  "rules": [
+    "terminal-cwd-safety.mdc"
+  ],
+  "dependencies": [],
+  "configuration": {
+    "require_repo_path": true,
+    "require_explicit_cd": true,
+    "shell": "powershell",
+    "verification_command": "(Get-Location).Path"
+  },
+  "enforcement": {
+    "before_terminal_commands": true
+  }
+}
+
+

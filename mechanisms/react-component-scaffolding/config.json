@@ -1,0 +1,81 @@
+{
+  "name": "React Component Scaffolding",
+  "description": "Automated React component generation with TypeScript, testing, and documentation",
+  "enabled": true,
+  "version": "1.0.0",
+  "rules": ["react-component-scaffolding.mdc"],
+  "dependencies": ["documentation"],
+  "configuration": {
+    "component_types": {
+      "ui": {
+        "template": "./templates/ui-component.tsx",
+        "features": ["typescript", "styled", "responsive", "accessible"]
+      },
+      "layout": {
+        "template": "./templates/layout-component.tsx",
+        "features": ["typescript", "responsive", "flexbox"]
+      },
+      "form": {
+        "template": "./templates/form-component.tsx",
+        "features": ["typescript", "validation", "accessible", "controlled"]
+      },
+      "data": {
+        "template": "./templates/data-component.tsx",
+        "features": ["typescript", "sorting", "filtering", "pagination"]
+      },
+      "feedback": {
+        "template": "./templates/feedback-component.tsx",
+        "features": ["typescript", "animations", "accessible"]
+      },
+      "navigation": {
+        "template": "./templates/navigation-component.tsx",
+        "features": ["typescript", "routing", "accessible", "responsive"]
+      }
+    },
+    "default_features": ["typescript", "accessible", "responsive"],
+    "output_structure": {
+      "component_dir": "./src/components/{component_name}/",
+      "files": {
+        "component": "{component_name}.tsx",
+        "index": "index.ts",
+        "types": "types.ts",
+        "styles": "{component_name}.module.css",
+        "test": "{component_name}.test.tsx",
+        "stories": "{component_name}.stories.tsx",
+        "docs": "{component_name}.md"
+      }
+    },
+    "styling_approach": "tailwind",
+    "testing_framework": "jest-rtl",
+    "typescript_config": {
+      "strict": true,
+      "no_implicit_any": true,
+      "strict_null_checks": true
+    }
+  },
+  "automation": {
+    "auto_generate": {
+      "on_demand": true,
+      "with_template": true,
+      "validate_structure": true
+    },
+    "quality_checks": {
+      "typescript_compile": true,
+      "linting_pass": true,
+      "tests_pass": true,
+      "accessibility_check": true
+    }
+  },
+  "integration": {
+    "storybook": {
+      "enabled": true,
+      "auto_add_stories": true,
+      "chromatic_integration": false
+    },
+    "documentation": {
+      "enabled": true,
+      "auto_generate_docs": true,
+      "include_examples": true
+    }
+  }
+}

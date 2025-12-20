@@ -1,0 +1,34 @@
+---
+description: Terminal working-directory (CWD) safety rules
+alwaysApply: true
+---
+# Terminal CWD Safety (PowerShell)
+
+## Goal
+Prevent “wrong folder” mistakes by ensuring every terminal command runs inside the intended repository root.
+
+## Single Source of Truth
+- The **only** authoritative path is `{repo_path}` from the active task/template input.
+- **Never hardcode** an absolute path like `D:\...\some-other-app` inside templates, task files, or commands.
+
+## Mandatory Rules (Before Any Terminal Command)
+1. **Set CWD explicitly** using the task's `{repo_path}`:
+   - `Set-Location -Path "{repo_path}"`
+2. **Verify CWD immediately**:
+   - `(Get-Location).Path`
+3. If the printed path is not the intended repo root (or inside it), **STOP** and correct `{repo_path}` before running anything else.
+
+## When Reusing an Existing Terminal
+- Do **not** assume the terminal is still in the correct folder.
+- Re-run:
+  - `Set-Location -Path "{repo_path}"; (Get-Location).Path`
+
+## Template Requirements
+- Any task template that includes terminal steps must reference `{repo_path}` (not a fixed directory).
+- Any example task file that shows `repo_path:` must use a placeholder (e.g. `<absolute path to repo root>`) or the current repo, never another project.
+
+## Learning Signal
+If a mistake happens due to wrong working directory, record it as:
+- `llm_mistake_type: wrong_cwd`
+and update templates/rules so the next run is impossible to execute from the wrong folder.
+
