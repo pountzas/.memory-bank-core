@@ -1,0 +1,179 @@
+{
+  "version": "2.1.0",
+  "description": "Memory Bank Core Configuration - Master configuration for all projects",
+  "memory_bank_core": {
+    "path": "C:\\Users\\mik\\.memory-bank-core",
+    "enabled": true,
+    "version": "2.1.0"
+  },
+  "shared_scripts": {
+    "path": "./shared-scripts/",
+    "enabled": true,
+    "categories": {
+      "link_management": ["create-links.bat", "create-links.ps1", "setup-links-admin.bat", "setup-links-admin.ps1", "verify-links.ps1"],
+      "project_setup": ["setup-new-project.bat", "setup-new-project.sh", "setup-status.ps1"],
+      "synchronization": ["sync-from-core.ps1"],
+      "script_management": ["copy-scripts.ps1"]
+    },
+    "linking_mechanism": "copy",
+    "auto_copy": false,
+    "copy_script": "./shared-scripts/copy-scripts.ps1",
+    "last_updated": "2025-12-13",
+    "total_scripts": 11
+  },
+  "mechanisms": {
+    "git-workflow": {
+      "enabled": true,
+      "auto_commit": true,
+      "branch_strategy": "feature-branches"
+    },
+    "verification-and-push": {
+      "enabled": true,
+      "pre_push_checks": ["build", "lint"]
+    },
+    "commit-system": {
+      "enabled": true,
+      "conventional_commits": true
+    },
+    "documentation": {
+      "enabled": false,
+      "auto_generate": true,
+      "component_docs": true
+    },
+    "claude-skills-integration": {
+      "enabled": true,
+      "auto_discover": true,
+      "skill_templates": true
+    },
+    "react-build-automation": {
+      "enabled": true,
+      "optimize_chunks": true,
+      "tree_shaking": true
+    },
+    "react-component-scaffolding": {
+      "enabled": true,
+      "auto_generate_props": true,
+      "template_library": true
+    },
+    "react-performance-monitoring": {
+      "enabled": true,
+      "bundle_analysis": true,
+      "runtime_metrics": true
+    },
+    "react-testing-automation": {
+      "enabled": true,
+      "auto_generate_tests": true,
+      "coverage_tracking": true
+    },
+    "self-correction": {
+      "enabled": true,
+      "learning_modes": {
+        "active": true,
+        "passive": true,
+        "predictive": false
+      },
+      "correction_types": {
+        "command_errors": true,
+        "template_failures": true,
+        "mechanism_issues": true,
+        "configuration_errors": true,
+        "user_feedback": true,
+        "performance_regressions": true
+      }
+    },
+    "terminal-cwd-safety": {
+      "enabled": true,
+      "mandatory": true,
+      "enforcement": "strict"
+    }
+  },
+  "rules": {
+    "terminal-path-verification": {
+      "enabled": true,
+      "enforcement": "mandatory",
+      "description": "Always verify project directory path before executing terminal commands"
+    },
+    "powershell-usage": {
+      "enabled": true,
+      "restriction": "cursor-only",
+      "description": "Use PowerShell only for Cursor IDE configuration changes"
+    },
+    "claude-skills-integration": {
+      "enabled": true,
+      "auto_discover": true,
+      "description": "Enable Claude AI skills integration for enhanced task execution"
+    },
+    "react-build-automation": {
+      "enabled": true,
+      "optimization_focus": "performance",
+      "description": "Automate React build processes and optimizations"
+    },
+    "react-component-scaffolding": {
+      "enabled": true,
+      "template_driven": true,
+      "description": "Use templates for consistent React component generation"
+    },
+    "react-performance-monitoring": {
+      "enabled": true,
+      "real_time_tracking": true,
+      "description": "Monitor React application performance metrics"
+    },
+    "react-testing-automation": {
+      "enabled": true,
+      "coverage_requirements": 80,
+      "description": "Automate React testing and coverage tracking"
+    },
+    "self-correction": {
+      "enabled": true,
+      "continuous_learning": true,
+      "description": "Enable AI-powered self-correction and improvement"
+    },
+    "terminal-cwd-safety": {
+      "enabled": true,
+      "strict_enforcement": true,
+      "description": "Ensure terminal commands run in correct working directory"
+    }
+  },
+  "task_templates": {
+    "small-feature": {
+      "intent": "Deliver a small, shippable user-facing feature with tests",
+      "steps": [
+        "Define scope and acceptance criteria",
+        "Write failing tests (RED) for all functionality",
+        "Implement minimal code to make tests pass (GREEN)",
+        "Refactor code while maintaining test coverage",
+        "Update docs/changelog and screenshots",
+        "Validate locally and in CI with full test coverage"
+      ],
+      "timebox_minutes": 120
+    },
+    "refactor": {
+      "intent": "Improve code structure without changing behavior",
+      "steps": [
+        "Capture baseline (tests, metrics, screenshots)",
+        "Apply refactor in small, verifiable increments",
+        "Maintain behavior parity with tests",
+        "Document rationale and outcomes"
+      ],
+      "timebox_minutes": 120
+    },
+    "chore-doc": {
+      "intent": "Add or update documentation, configs, or project meta",
+      "steps": [
+        "Identify scope and affected files",
+        "Make changes with clear structure",
+        "Validate formatting/linting",
+        "Summarize changes and rationale"
+      ],
+      "timebox_minutes": 60
+    }
+  },
+  "last_updated": "2025-12-13",
+  "core_features": [
+    "Cross-project script sharing via shared-scripts/",
+    "Mechanism synchronization via sync-from-core.ps1",
+    "Template library for consistent task execution",
+    "Rule engine for workflow enforcement",
+    "Centralized configuration management"
+  ]
+}
