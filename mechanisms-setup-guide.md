@@ -1,9 +1,11 @@
 # Mechanisms Setup Guide - Complete Development Workflow
 
 ## Overview
+
 This guide documents the complete process for enabling Git Commit System, Test Driven Development, and Documentation mechanisms in Next.js projects. This setup provides automated quality gates, conventional commit enforcement, TDD workflow support, and comprehensive documentation generation.
 
 ## Prerequisites
+
 - Next.js project with TypeScript
 - Git repository initialized
 - Node.js and npm installed
@@ -13,25 +15,22 @@ This guide documents the complete process for enabling Git Commit System, Test D
 First, update the mechanism configuration files:
 
 ### memory-bank/mechanisms/commit-system/config.json
+
 ```json
 {
   "name": "Git Commit System",
   "description": "Enforces proper git commit practices and workflow",
   "enabled": true,
   "version": "1.0.0",
-  "rules": [
-    "commit-system.mdc"
-  ],
-  "dependencies": [
-    "git-workflow"
-  ],
+  "rules": ["commit-system.mdc"],
+  "dependencies": ["git-workflow"],
   "configuration": {
     "conventional_commits": true,
     "selective_staging": true,
     "pre_commit_verification": true,
     "commit_message_format": "type(scope): description",
     "max_commit_size_lines": 200,
-    "max_commit_files": 5,
+    "max_commit_files": 15,
     "require_verification": true,
     "enforce_feature_branches": true
   },
@@ -44,15 +43,14 @@ First, update the mechanism configuration files:
 ```
 
 ### memory-bank/mechanisms/test-driven-development/config.json
+
 ```json
 {
   "name": "Test Driven Development",
   "description": "Enforces TDD practices with RED-GREEN-REFACTOR cycle",
   "enabled": true,
   "version": "1.0.0",
-  "rules": [
-    "test-driven-development.mdc"
-  ],
+  "rules": ["test-driven-development.mdc"],
   "dependencies": [],
   "configuration": {
     "require_tests_first": true,
@@ -73,6 +71,7 @@ First, update the mechanism configuration files:
 ```
 
 ### memory-bank/mechanisms/documentation/config.json
+
 ```json
 {
   "version": "1.0.0",
@@ -80,13 +79,7 @@ First, update the mechanism configuration files:
   "enabled": true,
   "documentation": {
     "output_directory": "./docs",
-    "component_categories": [
-      "layout",
-      "ui",
-      "data-viz",
-      "devices",
-      "pages"
-    ],
+    "component_categories": ["layout", "ui", "data-viz", "devices", "pages"],
     "auto_generate": {
       "on_component_change": true,
       "on_page_change": false,
@@ -149,31 +142,32 @@ npm install --save-dev \
 ## 3. Configure Jest Testing Framework
 
 ### jest.config.js
+
 ```javascript
-const nextJest = require('next/jest')
+const nextJest = require("next/jest");
 
 const createJestConfig = nextJest({
-  dir: './',
-})
+  dir: "./",
+});
 
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   moduleNameMapper: {
-    '^@/components/(.*)$': '<rootDir>/components/$1',
-    '^@/lib/(.*)$': '<rootDir>/lib/$1',
-    '^@/styles/(.*)$': '<rootDir>/styles/$1',
-    '^@/types/(.*)$': '<rootDir>/types/$1',
-    '^@/hooks/(.*)$': '<rootDir>/hooks/$1',
+    "^@/components/(.*)$": "<rootDir>/components/$1",
+    "^@/lib/(.*)$": "<rootDir>/lib/$1",
+    "^@/styles/(.*)$": "<rootDir>/styles/$1",
+    "^@/types/(.*)$": "<rootDir>/types/$1",
+    "^@/hooks/(.*)$": "<rootDir>/hooks/$1",
   },
-  testEnvironment: 'jest-environment-jsdom',
+  testEnvironment: "jest-environment-jsdom",
   collectCoverageFrom: [
-    '**/*.{js,jsx,ts,tsx}',
-    '!**/*.d.ts',
-    '!**/node_modules/**',
-    '!**/.next/**',
-    '!**/coverage/**',
-    '!jest.config.js',
-    '!jest.setup.js',
+    "**/*.{js,jsx,ts,tsx}",
+    "!**/*.d.ts",
+    "!**/node_modules/**",
+    "!**/.next/**",
+    "!**/coverage/**",
+    "!jest.config.js",
+    "!jest.setup.js",
   ],
   coverageThreshold: {
     global: {
@@ -184,25 +178,26 @@ const customJestConfig = {
     },
   },
   testMatch: [
-    '<rootDir>/**/__tests__/**/*.{js,jsx,ts,tsx}',
-    '<rootDir>/**/*.{test,spec}.{js,jsx,ts,tsx}',
+    "<rootDir>/**/__tests__/**/*.{js,jsx,ts,tsx}",
+    "<rootDir>/**/*.{test,spec}.{js,jsx,ts,tsx}",
   ],
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
-}
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
+};
 
-module.exports = createJestConfig(customJestConfig)
+module.exports = createJestConfig(customJestConfig);
 ```
 
 ### jest.setup.js
+
 ```javascript
 // Optional: configure or set up a testing framework before each test.
 // If you delete this file, remove `setupFilesAfterEnv` from `jest.config.js`
 
 // Learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 
 // Mock Next.js router
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter() {
     return {
       push: jest.fn(),
@@ -211,25 +206,25 @@ jest.mock('next/navigation', () => ({
       back: jest.fn(),
       forward: jest.fn(),
       refresh: jest.fn(),
-      pathname: '/',
+      pathname: "/",
       query: {},
-    }
+    };
   },
   useSearchParams() {
-    return new URLSearchParams()
+    return new URLSearchParams();
   },
   usePathname() {
-    return '/'
+    return "/";
   },
-}))
+}));
 
 // Global test utilities
-global.fetch = jest.fn()
+global.fetch = jest.fn();
 
 // Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: jest.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
@@ -239,43 +234,44 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
-})
+});
 ```
 
 ## 4. Configure Commitlint
 
 ### commitlint.config.js
+
 ```javascript
 module.exports = {
-  extends: ['@commitlint/config-conventional'],
+  extends: ["@commitlint/config-conventional"],
   rules: {
-    'type-enum': [
+    "type-enum": [
       2,
-      'always',
+      "always",
       [
-        'feat',
-        'fix',
-        'docs',
-        'style',
-        'refactor',
-        'test',
-        'chore',
-        'perf',
-        'ci',
-        'build',
-        'revert'
-      ]
+        "feat",
+        "fix",
+        "docs",
+        "style",
+        "refactor",
+        "test",
+        "chore",
+        "perf",
+        "ci",
+        "build",
+        "revert",
+      ],
     ],
-    'type-case': [0], // Disable type case checking
-    'type-empty': [2, 'never'],
-    'scope-case': [0], // Disable scope case checking
-    'subject-case': [0], // Disable subject case checking
-    'subject-empty': [2, 'never'],
-    'subject-full-stop': [2, 'never', '.'],
-    'header-max-length': [2, 'always', 72],
-    'scope-empty': [0, 'never']
-  }
-}
+    "type-case": [0], // Disable type case checking
+    "type-empty": [2, "never"],
+    "scope-case": [0], // Disable scope case checking
+    "subject-case": [0], // Disable subject case checking
+    "subject-empty": [2, "never"],
+    "subject-full-stop": [2, "never", "."],
+    "header-max-length": [2, "always", 72],
+    "scope-empty": [0, "never"],
+  },
+};
 ```
 
 ## 5. Initialize Husky and Setup Git Hooks
@@ -285,11 +281,13 @@ npx husky init
 ```
 
 ### .husky/pre-commit
+
 ```bash
 npx lint-staged
 ```
 
 ### .husky/commit-msg
+
 ```bash
 npx --no-install commitlint --edit "$1"
 ```
@@ -305,9 +303,7 @@ Update package.json:
       "eslint --fix",
       "jest --findRelatedTests --passWithNoTests"
     ],
-    "*.{json,css,md}": [
-      "prettier --write"
-    ]
+    "*.{json,css,md}": ["prettier --write"]
   },
   "config": {
     "commitizen": {
@@ -376,11 +372,13 @@ mkdir -p __tests__/unit/components/ui
 ## 10. Test the Setup
 
 ### Run Tests
+
 ```bash
 npm test
 ```
 
 ### Test Pre-commit Hooks
+
 ```bash
 git add .
 git commit -m "chore: test mechanisms setup"
@@ -389,20 +387,25 @@ git commit -m "chore: test mechanisms setup"
 ## Common Issues & Solutions
 
 ### Issue: ESLint complains about require() in config files
+
 **Solution:** Add config files to ESLint globalIgnores in eslint.config.mjs
 
 ### Issue: Commitlint case validation errors
+
 **Solution:** Disable problematic case rules (type-case, scope-case, subject-case) by setting them to [0]
 
 ### Issue: Pre-commit hook fails on config files
+
 **Solution:** Ensure config files are properly ignored by ESLint and lint-staged
 
 ### Issue: Path aliases not working in tests
+
 **Solution:** Ensure moduleNameMapper in jest.config.js matches tsconfig.json paths
 
 ## Verification Checklist
 
 ### Core Mechanisms
+
 - [ ] `npm test` runs successfully
 - [ ] `git add . && git commit -m "test: verify setup"` works
 - [ ] Pre-commit hooks run ESLint and Jest
@@ -411,6 +414,7 @@ git commit -m "chore: test mechanisms setup"
 - [ ] Path aliases work in both app and tests
 
 ### Documentation Mechanism
+
 - [ ] `npm run docs:generate` creates documentation successfully
 - [ ] `npm run docs:validate` passes without errors
 - [ ] Documentation files are created in `./docs/` directory
@@ -422,6 +426,7 @@ git commit -m "chore: test mechanisms setup"
 ### For Developers
 
 **Writing Tests First (TDD):**
+
 1. Create test file: `component.test.tsx`
 2. Write failing test
 3. Run `npm run test:watch`
@@ -429,6 +434,7 @@ git commit -m "chore: test mechanisms setup"
 5. Refactor while keeping tests green
 
 **Committing Code:**
+
 ```bash
 # Interactive commit
 npm run commit
@@ -438,6 +444,7 @@ git commit -m "feat(ui): add new button component"
 ```
 
 **Test Commands:**
+
 ```bash
 npm test              # Run all tests
 npm run test:watch    # Watch mode
@@ -445,6 +452,7 @@ npm run test:coverage # With coverage report
 ```
 
 **Documentation Commands:**
+
 ```bash
 npm run docs:generate # Generate all documentation
 npm run docs:validate # Validate documentation completeness
