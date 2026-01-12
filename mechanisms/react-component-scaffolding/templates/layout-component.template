@@ -1,5 +1,4 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
 import styles from './{{componentName}}.module.css';
 
 export interface {{componentName}}Props extends React.HTMLAttributes<HTMLDivElement> {
@@ -25,17 +24,15 @@ export const {{componentName}} = React.forwardRef<HTMLDivElement, {{componentNam
     return (
       <div
         ref={ref}
-        className={cn(
+        className={[
           styles.{{componentName | camelCase}},
           styles[`{{componentName | camelCase}}--${direction}`],
           styles[`{{componentName | camelCase}}--align-${align}`],
           styles[`{{componentName | camelCase}}--justify-${justify}`],
           styles[`{{componentName | camelCase}}--gap-${gap}`],
-          {
-            [styles['{{componentName | camelCase}}--wrap']]: wrap,
-          },
+          wrap ? styles['{{componentName | camelCase}}--wrap'] : '',
           className
-        )}
+        ].filter(Boolean).join(' ')}
         {...props}
       >
         {children}
